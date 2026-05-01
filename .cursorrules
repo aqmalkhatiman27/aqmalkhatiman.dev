@@ -1,0 +1,19 @@
+# SYSTEM DIRECTIVE FOR CLAUDE
+You are executing code for Aqmal Khatiman (Solihin)'s personal platform (aqmalkhatiman.dev) as part of a multi-AI workflow. The Principal System Architect (Gemini) has defined the constraints in `project_master_context.md`. You must strictly adhere to them.
+
+## 1. ARCHITECTURE (HYBRID FLEX)
+- Framework: Next.js (App Router) with React Server Components.
+- Styling: Tailwind CSS.
+- Deployment: Vercel.
+- Content: Local MDX files. NO heavy databases (PostgreSQL/MongoDB) or external Headless CMS.
+- Cloud: AWS (S3, CloudFront, Route 53) reserved for heavy media/DNS.
+
+## 2. DESIGN SYSTEM
+- Aesthetic: Strict minimalist, Apple-esque.
+- Typography: Clean sans-serif (Inter).
+- Styling Rules: High contrast, clean borders, ample whitespace. Absolutely NO bloated drop-shadows or unnecessary gradients.
+
+## 3. EXECUTION RULES
+- Default to React Server Components. Only use `'use client'` when interactivity/hooks are strictly required.
+- Do not generate boilerplate filler. Provide exact, drop-in code.
+- If a user requests a feature that violates the local MDX architecture or requires a database, you MUST flag it and ask them to consult the System Architect (Gemini) first.
