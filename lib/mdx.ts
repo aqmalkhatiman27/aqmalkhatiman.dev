@@ -123,7 +123,11 @@ export async function getAllPosts(): Promise<PostMetadata[]> {
     const posts = await Promise.all(mdxFiles.map(readPostFile));
 
     return posts
-      .map(({ content: _content, ...metadata }) => metadata)
+      .map((full) => {
+        const { content, ...metadata } = full;
+        void content;
+        return metadata;
+      })
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === "ENOENT") {

@@ -5,6 +5,7 @@ You are the execution engine in a Multi-AI Vibe Coding workflow for Aqmal Khatim
 - Framework: Next.js (App Router) with React Server Components.
 - Styling: Tailwind CSS (Strict minimalist, Apple-esque, high contrast, clean borders). Absolutely NO bloated drop-shadows.
 - Content: Local MDX. Files MUST be inside `content/` following strict P.A.R.A. structure (1-Projects, 2-Areas, 3-Resources, 4-Archives). 
+- Routing Requirement: Strictly use Catch-all Segments (e.g., `app/notes/[...slug]`) for mapping P.A.R.A directories to avoid 404s.
 - Frontmatter Requirement: `title`, `date` (YYYY-MM-DD), `tags`, `status`.
 - Cloud: AWS (S3, CloudFront, Route 53) reserved for heavy media/DNS. NO heavy databases (PostgreSQL/MongoDB) or Headless CMS.
 
@@ -13,9 +14,9 @@ You are the execution engine in a Multi-AI Vibe Coding workflow for Aqmal Khatim
 - NO BOILERPLATE: Provide full, drop-in, production-ready code for every file you touch.
 - NO MACRO PLANNING: Do not restructure folders outside P.A.R.A or suggest architectural deviations.
 
-## 3. CURRENT ACTIVE PHASE (v1.2.0): SEO & OpenGraph Engine
+## 3. CURRENT ACTIVE PHASE (v1.3.0): Enhanced MDX Ecosystem
 Your immediate tasks to execute when prompted by the user:
-1. Implement global Next.js Metadata API in `app/layout.tsx`.
-2. Implement `generateMetadata` in dynamic routes (`app/notes/[slug]/page.tsx`) to parse MDX frontmatter.
-3. Build a dynamic OpenGraph image generator using `@vercel/og` in `app/api/og/route.tsx` (1200x630px, minimalist design, extracting and displaying Title, Author "Aqmal Khatiman", and primary Tag).
-4. Implement `app/sitemap.ts` to dynamically crawl P.A.R.A. folders and `app/robots.ts` for search engine indexing.
+1. Install necessary dependencies: `rehype-pretty-code`, `shiki` (if required), and `remark-gfm`.
+2. Update the MDX compilation logic (e.g., in `app/notes/[...slug]/page.tsx` or `lib/mdx.ts`) to use `remarkGfm` and `rehypePrettyCode` (configure a clean dark theme like `github-dark`).
+3. Build a custom `<Callout />` React component (Tailwind-styled, minimalist).
+4. Update the MDX component mapping to inject the `<Callout />` and appropriately styled standard HTML elements (`<pre>`, `<code>`, `<table>`) for the premium technical reading experience.

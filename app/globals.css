@@ -46,3 +46,39 @@
     text-rendering: optimizeLegibility;
   }
 }
+
+/* Syntax figures from rehype-pretty-code (github-dark slab on any color scheme). */
+[data-rehype-pretty-code-figure] {
+  margin-block: 2rem;
+  border-radius: 0.875rem;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background-color: #0d1117;
+}
+
+[data-rehype-pretty-code-title],
+[data-rehype-pretty-code-caption] {
+  padding: 0.65rem 1.1rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  color: rgba(250, 250, 250, 0.65);
+}
+
+[data-rehype-pretty-code-caption] {
+  border-top: 1px solid var(--border);
+  border-bottom: 0;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  font-size: 0.78rem;
+  color: rgba(250, 250, 250, 0.55);
+}
+
+[data-rehype-pretty-code-figure] pre {
+  margin: 0 !important;
+  border-radius: 0;
+  border: 0;
+}

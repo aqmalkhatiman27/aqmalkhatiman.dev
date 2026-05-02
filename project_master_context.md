@@ -1,5 +1,5 @@
 ---
-version: 1.2.0
+version: 1.3.0
 last_updated: 2026-05-03
 last_updater: Gemini
 ---
@@ -28,13 +28,14 @@ A dynamic, high-performance personal portfolio and digital garden for Aqmal Khat
 1.  **`/` (Home):** Executive summary, "The Trinity" pillar grid, and a dynamic feed of the 3 latest MDX entries.
 2.  **`/about`:** Academic background, neurodiversity journey, and business trajectory.
 3.  **`/training`:** Dynamic grid of `<CourseCard />` components mapping to active/past modules.
-4.  **`/notes`:** The MDX digital garden (Technical teardowns, AWS/ZTM study notes, reflections).
+4.  **`/notes`:** The MDX digital garden (Technical teardowns, AWS/ZTM study notes, reflections). MUST strictly use Catch-all Segments (`app/notes/[...slug]`) for P.A.R.A directory routing.
 5.  **`/ventures`:** Professional showcase of operational businesses (Serumpun).
 
-## 5. Phase 1.2.0 Blueprint: SEO, OpenGraph & Metadata Engine
-**Objective:** Transform `aqmalkhatiman.dev` into a highly discoverable, shareable brand asset. Every generated page must possess comprehensive metadata and dynamically generated OpenGraph (OG) images for premium social media unfurling.
+## 5. Phase 1.3.0 Blueprint: Enhanced MDX Ecosystem
+**Objective:** Upgrade the internal reading experience for technical deep-dives. Transform raw Markdown into a premium, VS Code-like reading environment suitable for an IT Professional and System Architect.
 
-- **5.1 Global Metadata Configuration (`app/layout.tsx`):** Implement Next.js Metadata API globally. Define `metadataBase`, default title templates, descriptions, and Twitter/OG baseline tags.
-- **5.2 Dynamic Metadata Generation (`app/notes/[slug]/page.tsx`):** Use `generateMetadata` to parse MDX frontmatter (Title, Date, Description, Tags) and map dynamically to the page's metadata object.
-- **5.3 Dynamic OpenGraph Image Generation (`@vercel/og`):** Use `app/api/og/route.tsx` to programmatically generate 1200x630px minimalist OG images extracting Article Title, Author Name, and primary Tag.
-- **5.4 Automated Site Mapping:** Implement `app/sitemap.ts` to crawl P.A.R.A. folders and `app/robots.ts` for search engine indexing.
+- **5.1 Syntax Highlighting (`rehype-pretty-code`):** Integrate `rehype-pretty-code` into the MDX compilation pipeline (via `next-mdx-remote` or `@mdx-js/mdx`). Configure a clean, high-contrast dark theme (e.g., `github-dark` or `one-dark-pro`) for all code blocks to match the minimalist aesthetic.
+- **5.2 Extended Markdown Support (`remark-gfm`):** Add `remark-gfm` to support GitHub Flavored Markdown (tables, task lists, strikethrough, autolinks) essential for robust technical documentation.
+- **5.3 Custom MDX Components:** 
+  - Build a custom React `<Callout />` component (styled with Tailwind) to highlight warnings, tips, or important architectural notes.
+  - Map this component, along with styled HTML defaults (e.g., `<pre>`, `<code>`), directly into the MDX provider so they can be seamlessly used inside any `.mdx` file.
