@@ -46,6 +46,32 @@ export default async function Home() {
           A calm, high-contrast workspace for portfolio, notes, and teaching—
           anchored in three pillars that shape how I build and show up online.
         </p>
+        <section className="mt-8" aria-labelledby="credentials-heading">
+          <h2
+            id="credentials-heading"
+            className="text-xs font-medium tracking-wide text-muted uppercase"
+          >
+            Credentials
+          </h2>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <a
+              href="https://www.hrdcorp.gov.my/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center rounded-full border border-border px-3 py-1 text-sm text-muted transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
+            >
+              HRD Corp Certified Trainer
+            </a>
+            <a
+              href="https://aws.amazon.com/certification/certified-cloud-practitioner/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center rounded-full border border-border px-3 py-1 text-sm text-muted transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
+            >
+              AWS Certified Cloud Practitioner
+            </a>
+          </div>
+        </section>
 
         <div className="mt-16 space-y-0 border border-border rounded-lg bg-surface md:grid md:grid-cols-3 md:divide-x md:divide-border md:rounded-lg md:space-y-0">
           {pillars.map((pillar) => (
