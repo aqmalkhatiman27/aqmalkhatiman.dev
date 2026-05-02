@@ -31,21 +31,58 @@ type NotePageProps = {
   }>;
 };
 
-function normalizeDescription(excerpt: string | undefined, content: string): string {
-  if (excerpt && excerpt.trim().length > 0) {
-    return excerpt.trim();
-  }
-
-  const collapsed = content
+function stripMdxToPlainText(content: string): string {
+  return content
+    .replace(/```[\s\S]*?```/g, " ")
+    .replace(/`[^`]*`/g, " ")
+    .replace(/!\[[^\]]*\]\([^)]+\)/g, " ")
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/^#{1,6}\s+/gm, "")
+    .replace(/^\s*[-*+]\s+/gm, "")
+    .replace(/^\s*\d+\.\s+/gm, "")
+    .replace(/[*_~>#|]/g, " ")
     .replace(/\n+/g, " ")
     .replace(/\s+/g, " ")
     .trim();
+}
 
-  if (collapsed.length <= 160) {
-    return collapsed;
+function ensureDescriptionLength(text: string): string {
+  const cleaned = text.trim();
+  if (cleaned.length === 0) {
+    return "Technical note and execution log from aqmalkhatiman.dev on architecture, cloud, and applied AI workflows.";
   }
 
-  return `${collapsed.slice(0, 157)}...`;
+  if (cleaned.length < 100) {
+    return `${cleaned} This note covers practical implementation details, execution context, and outcomes for reproducible learning.`;
+  }
+
+  if (cleaned.length <= 150) {
+    return cleaned;
+  }
+
+  const sliced = cleaned.slice(0, 150);
+  const lastSpace = sliced.lastIndexOf(" ");
+  const sentence = lastSpace > 100 ? sliced.slice(0, lastSpace) : sliced;
+  return `${sentence}...`;
+}
+
+function normalizeDescription(
+  excerpt: string | undefined,
+  content: string,
+): string {
+  const preferred = excerpt?.trim() ?? "";
+  if (preferred.length >= 100 && preferred.length <= 150) {
+    return preferred;
+  }
+
+  if (preferred.length > 150) {
+    return ensureDescriptionLength(preferred);
+  }
+
+  const plainContent = stripMdxToPlainText(content);
+  const combined = preferred.length > 0 ? `${preferred} ${plainContent}` : plainContent;
+  return ensureDescriptionLength(combined);
 }
 
 function encodeSlugPath(slug: string): string {
@@ -66,7 +103,7 @@ export async function generateMetadata({
     const description = normalizeDescription(post.excerpt, post.content);
     const primaryTag = post.tags[0] ?? "Notes";
     const notePath = `/notes/${encodeSlugPath(post.slug)}`;
-    const ogImage = `/api/og?title=${encodeURIComponent(post.title)}&tag=${encodeURIComponent(primaryTag)}`;
+    const ogImage = `https://aqmalkhatiman.dev/api/og?title=${encodeURIComponent(post.title)}&tag=${encodeURIComponent(primaryTag)}`;
 
     return {
       title: post.title,

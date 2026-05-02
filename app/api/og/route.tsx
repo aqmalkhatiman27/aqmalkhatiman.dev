@@ -12,13 +12,17 @@ function cleanParam(value: string | null, fallback: string): string {
   if (!value) {
     return fallback;
   }
-  return value.trim().slice(0, 140) || fallback;
+  const normalized = value
+    .replace(/\+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  return normalized.slice(0, 140) || fallback;
 }
 
 export async function GET(request: Request): Promise<ImageResponse> {
   const { searchParams } = new URL(request.url);
   const title = cleanParam(
-    searchParams.get("title"),
+    searchParams.get("title") ?? searchParams.get("t"),
     "Aqmal Khatiman (Solihin)",
   );
   const tag = cleanParam(searchParams.get("tag"), "Technology");
