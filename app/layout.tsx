@@ -9,12 +9,50 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://aqmalkhatiman.dev"),
   title: {
     default: "Aqmal Khatiman (Solihin)",
     template: "%s · Aqmal Khatiman",
   },
   description:
     "Personal platform: system architecture & technology, disability & inclusivity, finance & business.",
+  keywords: [
+    "Aqmal Khatiman",
+    "System Architecture",
+    "AI",
+    "Cloud",
+    "Accessibility",
+    "Digital Garden",
+  ],
+  authors: [{ name: "Aqmal Khatiman" }],
+  creator: "Aqmal Khatiman",
+  openGraph: {
+    type: "website",
+    locale: "en_MY",
+    url: "/",
+    siteName: "aqmalkhatiman.dev",
+    title: "Aqmal Khatiman (Solihin)",
+    description:
+      "Personal platform: system architecture & technology, disability & inclusivity, finance & business.",
+    images: [
+      {
+        url: "/api/og?title=Aqmal%20Khatiman%20(Solihin)&tag=Technology",
+        width: 1200,
+        height: 630,
+        alt: "Aqmal Khatiman — Personal Platform",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Aqmal Khatiman (Solihin)",
+    description:
+      "Personal platform: system architecture & technology, disability & inclusivity, finance & business.",
+    images: ["/api/og?title=Aqmal%20Khatiman%20(Solihin)&tag=Technology"],
+  },
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export default function RootLayout({

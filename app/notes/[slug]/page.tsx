@@ -1,4 +1,5 @@
 import { compile, run } from "@mdx-js/mdx";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { cache } from "react";
@@ -29,6 +30,86 @@ type NotePageProps = {
     slug: string;
   }>;
 };
+
+function normalizeDescription(excerpt: string | undefined, content: string): string {
+  if (excerpt && excerpt.trim().length > 0) {
+    return excerpt.trim();
+  }
+
+  const collapsed = content
+    .replace(/\n+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  if (collapsed.length <= 160) {
+    return collapsed;
+  }
+
+  return `${collapsed.slice(0, 157)}...`;
+}
+
+function encodeSlugPath(slug: string): string {
+  return slug
+    .split("/")
+    .map((segment) => encodeURIComponent(segment))
+    .join("/");
+}
+
+export async function generateMetadata({
+  params,
+}: NotePageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const decodedSlug = decodeURIComponent(slug);
+
+  try {
+    const post = await getPostBySlug(decodedSlug);
+    const description = normalizeDescription(post.excerpt, post.content);
+    const primaryTag = post.tags[0] ?? "Notes";
+    const notePath = `/notes/${encodeSlugPath(post.slug)}`;
+    const ogImage = `/api/og?title=${encodeURIComponent(post.title)}&tag=${encodeURIComponent(primaryTag)}`;
+
+    return {
+      title: post.title,
+      description,
+      keywords: post.tags,
+      alternates: {
+        canonical: notePath,
+      },
+      openGraph: {
+        type: "article",
+        url: notePath,
+        title: post.title,
+        description,
+        publishedTime: post.date,
+        authors: ["Aqmal Khatiman"],
+        tags: post.tags,
+        images: [
+          {
+            url: ogImage,
+            width: 1200,
+            height: 630,
+            alt: `${post.title} — ${primaryTag}`,
+          },
+        ],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: post.title,
+        description,
+        images: [ogImage],
+      },
+    };
+  } catch {
+    return {
+      title: "Note Not Found",
+      description: "The requested note could not be found.",
+      robots: {
+        index: false,
+        follow: false,
+      },
+    };
+  }
+}
 
 export default async function NotePage({ params }: NotePageProps) {
   const { slug } = await params;
