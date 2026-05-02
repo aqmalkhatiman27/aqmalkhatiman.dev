@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: "%s · Aqmal Khatiman",
   },
   description:
-    "Personal platform: system architecture & technology, disability & inclusivity, finance & business.",
+    "Aqmal Khatiman's professional digital platform featuring system architecture insights, applied AI execution notes, inclusive design advocacy, and business-focused learning resources.",
   keywords: [
     "Aqmal Khatiman",
     "System Architecture",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     siteName: "aqmalkhatiman.dev",
     title: "Aqmal Khatiman (Solihin)",
     description:
-      "Personal platform: system architecture & technology, disability & inclusivity, finance & business.",
+      "Aqmal Khatiman's professional digital platform featuring system architecture insights, applied AI execution notes, inclusive design advocacy, and business-focused learning resources.",
     images: [
       {
         url: "/api/og?title=Aqmal%20Khatiman%20(Solihin)&tag=Technology",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Aqmal Khatiman (Solihin)",
     description:
-      "Personal platform: system architecture & technology, disability & inclusivity, finance & business.",
+      "Aqmal Khatiman's professional digital platform featuring system architecture insights, applied AI execution notes, inclusive design advocacy, and business-focused learning resources.",
     images: ["/api/og?title=Aqmal%20Khatiman%20(Solihin)&tag=Technology"],
   },
   alternates: {

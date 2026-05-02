@@ -27,7 +27,7 @@ const getMdxComponent = cache(async (source: string) => {
 
 type NotePageProps = {
   params: Promise<{
-    slug: string;
+    slug: string[];
   }>;
 };
 
@@ -95,8 +95,7 @@ function encodeSlugPath(slug: string): string {
 export async function generateMetadata({
   params,
 }: NotePageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const decodedSlug = decodeURIComponent(slug);
+  const decodedSlug = (await params).slug.map(decodeURIComponent).join("/");
 
   try {
     const post = await getPostBySlug(decodedSlug);
@@ -139,7 +138,8 @@ export async function generateMetadata({
   } catch {
     return {
       title: "Note Not Found",
-      description: "The requested note could not be found.",
+      description:
+        "The requested note could not be found in the current knowledge base. Explore the latest technical notes, architecture write-ups, and execution logs on aqmalkhatiman.dev.",
       robots: {
         index: false,
         follow: false,
@@ -149,8 +149,7 @@ export async function generateMetadata({
 }
 
 export default async function NotePage({ params }: NotePageProps) {
-  const { slug } = await params;
-  const decodedSlug = decodeURIComponent(slug);
+  const decodedSlug = (await params).slug.map(decodeURIComponent).join("/");
 
   try {
     const post = await getPostBySlug(decodedSlug);
