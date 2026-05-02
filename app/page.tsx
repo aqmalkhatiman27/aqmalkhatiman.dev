@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getAllPosts } from "@/lib/mdx";
 
 const pillars = [
@@ -86,7 +87,12 @@ export default async function Home() {
                   <li key={post.slug} className="px-6 py-5">
                     <article className="space-y-2">
                       <h3 className="text-base font-semibold tracking-tight text-foreground">
-                        {post.title}
+                        <Link
+                          href={`/notes/${encodeURIComponent(post.slug)}`}
+                          className="inline-flex transition-colors hover:text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20"
+                        >
+                          {post.title}
+                        </Link>
                       </h3>
                       <dl className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted">
                         <div className="flex items-center gap-2">

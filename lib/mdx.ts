@@ -66,7 +66,23 @@ function createSlugFromRelativePath(relativeFilePath: string): string {
 
 function slugToAbsolutePath(slug: string): string {
   const normalizedSlug = slug.replace(/^\/+|\/+$/g, "");
-  return path.join(CONTENT_DIR, `${normalizedSlug}${MDX_EXTENSION}`);
+  if (!normalizedSlug) {
+    throw new Error("Slug cannot be empty");
+  }
+
+  const segments = normalizedSlug.split("/");
+  if (segments.some((segment) => segment === "" || segment === "." || segment === "..")) {
+    throw new Error(`Invalid slug: ${slug}`);
+  }
+
+  const absolutePath = path.resolve(CONTENT_DIR, `${segments.join(path.sep)}${MDX_EXTENSION}`);
+  const contentRoot = `${CONTENT_DIR}${path.sep}`;
+
+  if (!absolutePath.startsWith(contentRoot)) {
+    throw new Error(`Invalid slug path traversal attempt: ${slug}`);
+  }
+
+  return absolutePath;
 }
 
 async function getAllMdxFiles(directory: string): Promise<string[]> {
