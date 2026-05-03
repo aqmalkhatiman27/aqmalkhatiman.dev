@@ -13,8 +13,9 @@ This project operates on a strictly constrained, highly optimized tech stack des
 - **Framework:** Next.js (App Router) with React Server Components.
 - **Styling:** Tailwind CSS (Strict minimalist, Apple-esque, high-contrast UI).
 - **Content Engine:** Local MDX parsed via `rehype-pretty-code` (Syntax Highlighting) and `remark-gfm`.
-- **Information Architecture:** Statically routed using Catch-all segments (`app/notes/[...slug]`) mapping directly to a strict **P.A.R.A methodology** directory structure (`content/1-Projects`, `content/3-Resources`, etc.).
-- **SEO & Discovery:** Custom Next.js Metadata API and `@vercel/og` engine dynamically generating OpenGraph image cards from MDX frontmatter.
+- **Information Architecture:** Statically routed using Catch-all segments (`app/notes/[...slug]`) mapping directly to a strict **P.A.R.A methodology** directory structure.
+- **Taxonomy Routing:** Dynamic tag aggregation and filtering via `app/tags/[tag]` utilizing native MDX frontmatter extraction.
+- **SEO & Discovery:** Custom Next.js Metadata API and `@vercel/og` engine dynamically generating OpenGraph image cards.
 - **CI/CD Pipeline:** Automated Edge deployment via Vercel.
 
 ## 🚀 Development Workflow: Multi-AI Vibe Coding
@@ -23,22 +24,14 @@ This codebase is actively developed using a dual-AI workflow:
 - **Micro-Executor:** Anthropic Claude via Cursor IDE Agent (Handles localized code generation and implementation).
 
 ## 💻 Local Setup (Strictly `npm`)
-
-To run the development server locally, please ensure you use `npm` to avoid lockfile conflicts (`yarn.lock` or `pnpm-lock.yaml` are strictly prohibited).
-
+To run the development server locally, please ensure you use `npm` to avoid lockfile conflicts.
 ```bash
-# Install dependencies
 npm install
-
-# Run the development server
 npm run dev
 ```
 
-Open http://localhost:3000 with your browser to see the result.
-
 ## 📂 Content Management (P.A.R.A)
-All articles and technical notes must be added to the content/ directory. Files must end in .mdx and contain the following strict frontmatter:
-
+All articles and technical notes must be added to the content/ directory. Files must end in .mdx and contain strict frontmatter:
 ```YAML
 ---
 title: "Article Title"
@@ -50,4 +43,4 @@ status: "Draft" | "Published"
 
 ---
 
-Current Architectural State: v1.3.0 (Enhanced MDX Ecosystem)
+Current Architectural State: v1.4.0 (Taxonomy & Tag Routing)

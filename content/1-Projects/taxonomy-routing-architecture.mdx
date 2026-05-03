@@ -1,0 +1,40 @@
+---
+title: "Building a Server-Side Taxonomy Engine in Next.js"
+date: "2026-05-03"
+tags: ["System Architecture", "Next.js", "Execution Log"]
+status: "Published"
+---
+
+A digital garden is essentially a flat file system until you connect the nodes. In Phase 1.4.0 of my platform architecture, I needed to transform isolated MDX files organized by P.A.R.A methodology into an explorable web of knowledge.
+
+The requirement was simple: I wanted users to click on tags like "System Architecture" or "Next.js" and be routed to a dynamic feed of related articles. The constraint? Do it entirely server-side without a database.
+
+## The Data Layer
+
+Instead of relying on a Headless CMS or a database query, the Next.js backend natively parses the local file system. I built utility functions in `lib/mdx.ts` to scan every single `.mdx` file, extract the `tags` array from the frontmatter, and deduplicate them.
+
+<Callout>
+**Architectural Note:** URL safety is critical here. A tag like "System Architecture" must be strictly slugified to `system-architecture` before being used in dynamic routes to prevent aggressive caching errors or 404s.
+</Callout>
+
+## Dynamic Routing Engine
+
+With the extracted and slugified tags, I utilized Next.js App Router's dynamic segments. The `app/tags/[tag]/page.tsx` component acts as the receiver.
+```tsx
+// Example of the server component filtering logic
+export default async function TagPage({ params }: { params: { tag: string } }) {
+  const { tag } = params;
+  
+  // getPostsByTag parses the frontmatter array and matches against the URL slug
+  const filteredPosts = await getPostsByTag(tag);
+
+  return (
+    <section>
+      <h1 className="text-3xl font-bold capitalize">{tag.replace('-', ' ')}</h1>
+      <ArticleGrid posts="{filteredPosts}"/>
+    </section>
+  );
+}
+```
+
+By generating these paths at build time, the taxonomy engine remains incredibly fast, leveraging Vercel's edge network while maintaining the minimalist, Apple-esque design language of the site. The web is now fully connected.
