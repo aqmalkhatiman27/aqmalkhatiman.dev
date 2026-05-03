@@ -20,6 +20,35 @@ export interface Post extends PostMetadata {
   content: string;
 }
 
+/** URL-safe slug from a tag string (lowercase, non-alphanumeric → hyphens). */
+export interface TagSummary {
+  slug: string;
+  /** Human-readable label from the first occurrence mapped to this slug. */
+  label: string;
+  /** Number of distinct posts that include this tag. */
+  count: number;
+}
+
+export function slugifyTag(raw: string): string {
+  const trimmed = raw.trim().toLowerCase();
+  if (!trimmed) {
+    return "";
+  }
+
+  return trimmed
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
+/**
+ * Normalizes a tag segment from the URL (e.g. `system-architecture`, `next-js`)
+ * so it matches {@link slugifyTag} output derived from frontmatter.
+ */
+export function normalizeTagSlugFromParam(param: string): string {
+  const decoded = decodeURIComponent(param.trim());
+  return slugifyTag(decoded.replace(/-/g, " "));
+}
+
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
 }
@@ -148,4 +177,46 @@ export async function getPostBySlug(slug: string): Promise<Post> {
     }
     throw error;
   }
+}
+
+export async function getAllTags(): Promise<TagSummary[]> {
+  const posts = await getAllPosts();
+  const aggregate = new Map<string, { label: string; count: number }>();
+
+  for (const post of posts) {
+    const seenInPost = new Set<string>();
+
+    for (const tag of post.tags) {
+      const slug = slugifyTag(tag);
+      if (!slug || seenInPost.has(slug)) {
+        continue;
+      }
+
+      seenInPost.add(slug);
+
+      const existing = aggregate.get(slug);
+      if (existing) {
+        existing.count += 1;
+      } else {
+        aggregate.set(slug, { label: tag.trim(), count: 1 });
+      }
+    }
+  }
+
+  return [...aggregate.entries()]
+    .map(([slug, { label, count }]) => ({ slug, label, count }))
+    .sort((a, b) => a.label.localeCompare(b.label, "en", { sensitivity: "base" }));
+}
+
+export async function getPostsByTag(tagParam: string): Promise<PostMetadata[]> {
+  const targetSlug = normalizeTagSlugFromParam(tagParam);
+  if (!targetSlug) {
+    return [];
+  }
+
+  const posts = await getAllPosts();
+  return posts.filter((post) => {
+    const slugs = new Set(post.tags.map((t) => slugifyTag(t)).filter(Boolean));
+    return slugs.has(targetSlug);
+  });
 }

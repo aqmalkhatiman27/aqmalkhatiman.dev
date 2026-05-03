@@ -1,5 +1,5 @@
 ---
-version: 1.3.0
+version: 1.4.0
 last_updated: 2026-05-03
 last_updater: Gemini
 ---
@@ -14,28 +14,32 @@ A dynamic, high-performance personal portfolio and digital garden for Aqmal Khat
 
 ## 2. Tech Stack & Infrastructure (The "Hybrid Flex")
 - **Frontend & Routing:** Next.js (App Router) with React Server Components.
-- **Deployment (Frontend):** Vercel (optimized for CI/CD speed and edge delivery).
+- **Deployment:** Vercel (Edge delivery).
 - **Styling:** Tailwind CSS (strict minimalist, Apple-esque design language).
-- **Content Engine:** MDX (Markdown + JSX) for dynamic case studies and tutorials. Content structure must strictly follow the P.A.R.A. directory methodology (1-Projects, 2-Areas, 3-Resources, 4-Archives).
-- **Cloud Infrastructure (Media & DNS):** AWS Route 53 (DNS), AWS S3 + CloudFront (for heavy media assets, PDFs, and high-res diagrams).
+- **Content Engine:** MDX parsed via `rehype-pretty-code` and `remark-gfm`. Content structure strictly follows the P.A.R.A. methodology (1-Projects, 2-Areas, 3-Resources, 4-Archives).
+- **Cloud Infrastructure:** AWS Route 53 (DNS), AWS S3 + CloudFront (for heavy media assets).
 
 ## 3. UI/UX Design Language
 - **Aesthetic:** Strict minimalist, Apple-esque design language.
 - **Typography:** `Inter` (or similar clean sans-serif). High contrast for readability.
-- **Components:** Clean borders, subtle hover transitions, ample whitespace, and zero bloated drop-shadows.
+- **Components:** Clean borders, subtle hover transitions, custom `<Callout />` components for technical notes. Zero bloated drop-shadows.
 
 ## 4. Site Architecture & Navigation
-1.  **`/` (Home):** Executive summary, "The Trinity" pillar grid, and a dynamic feed of the 3 latest MDX entries.
+1.  **`/` (Home):** Executive summary, "The Trinity" pillar grid, and latest MDX entries.
 2.  **`/about`:** Academic background, neurodiversity journey, and business trajectory.
-3.  **`/training`:** Dynamic grid of `<CourseCard />` components mapping to active/past modules.
-4.  **`/notes`:** The MDX digital garden (Technical teardowns, AWS/ZTM study notes, reflections). MUST strictly use Catch-all Segments (`app/notes/[...slug]`) for P.A.R.A directory routing.
-5.  **`/ventures`:** Professional showcase of operational businesses (Serumpun).
+3.  **`/training`:** Dynamic grid of `<CourseCard />` components.
+4.  **`/notes`:** The MDX digital garden. Strictly uses Catch-all Segments (`app/notes/[...slug]`).
+5.  **`/ventures`:** Professional showcase of operational businesses.
+6.  **`/tags` (NEW):** Master taxonomy page listing all available tags and their post counts.
+7.  **`/tags/[tag]` (NEW):** Dynamic route filtering notes by a specific tag.
 
-## 5. Phase 1.3.0 Blueprint: Enhanced MDX Ecosystem
-**Objective:** Upgrade the internal reading experience for technical deep-dives. Transform raw Markdown into a premium, VS Code-like reading environment suitable for an IT Professional and System Architect.
+## 5. Phase 1.4.0 Blueprint: Taxonomy & Tag Routing
+**Objective:** Transform flat metadata into an interconnected web of knowledge. Allow recruiters, clients, and students to navigate the digital garden by specific technical subjects and brand pillars.
 
-- **5.1 Syntax Highlighting (`rehype-pretty-code`):** Integrate `rehype-pretty-code` into the MDX compilation pipeline (via `next-mdx-remote` or `@mdx-js/mdx`). Configure a clean, high-contrast dark theme (e.g., `github-dark` or `one-dark-pro`) for all code blocks to match the minimalist aesthetic.
-- **5.2 Extended Markdown Support (`remark-gfm`):** Add `remark-gfm` to support GitHub Flavored Markdown (tables, task lists, strikethrough, autolinks) essential for robust technical documentation.
-- **5.3 Custom MDX Components:** 
-  - Build a custom React `<Callout />` component (styled with Tailwind) to highlight warnings, tips, or important architectural notes.
-  - Map this component, along with styled HTML defaults (e.g., `<pre>`, `<code>`), directly into the MDX provider so they can be seamlessly used inside any `.mdx` file.
+- **5.1 Data Layer Extension (`lib/mdx.ts`):** 
+  - Build robust utility functions to extract, deduplicate, and count all unique tags across the P.A.R.A directory (`getAllTags`).
+  - Build a filtering function to retrieve posts matching a specific tag (`getPostsByTag`).
+  - *Crucial:* Ensure tags are properly slugified or URL-encoded (e.g., "System Architecture" -> "system-architecture") to prevent routing 404 errors.
+- **5.2 Dynamic Tag Routing:**
+  - Build `app/tags/page.tsx`: A clean, high-contrast index listing all active tags.
+  - Build `app/tags/[tag]/page.tsx`: A dynamic feed that lists all articles under that specific tag, reusing the existing minimalist article card layout for UI consistency.
