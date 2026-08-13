@@ -1,46 +1,76 @@
 # aqmalkhatiman.dev — Digital Garden & Portfolio
 
-A dynamic, high-performance personal portfolio and digital garden for Aqmal Khatiman (Solihin). Built to serve as a professional showcase, a technical resource hub, and an automated PR engine.
+A personal portfolio and digital garden for Aqmal Khatiman — professional
+showcase, technical resource hub, and a public record of a career pivot into
+full-stack .NET/C# engineering.
 
-## 🏛️ Core Brand Pillars
-1. **IT/Technology:** System Architecture, Applied AI Workflows, and Cloud Infrastructure.
-2. **Disability/Inclusivity:** Advocacy and operational scaling via lived experience (Cerebral Palsy & OCD).
-3. **Finance/Business:** Wealth generation and operational breakdown of Serumpun businesses.
+## 🏛️ Brand Pillars
+1. **Technology** — System architecture, applied AI workflows, cloud infrastructure.
+2. **Education** — Andragogy, technical training design, instructional systems.
+3. **Inclusivity** — Advocacy and operational scaling via lived experience (Cerebral Palsy & OCD).
+4. **Business** — Operational breakdown of the Serumpun ventures.
 
-## 🛠️ The "Hybrid Flex" Architecture
-This project operates on a strictly constrained, highly optimized tech stack designed for speed and maintainability without database bloat.
+## 🛠️ Architecture
+Deliberately constrained stack — no database, no CMS, no runtime dependencies
+beyond the framework.
 
-- **Framework:** Next.js (App Router) with React Server Components.
-- **Styling:** Tailwind CSS (Strict minimalist, Apple-esque, high-contrast UI).
-- **Content Engine:** Local MDX parsed via `rehype-pretty-code` (Syntax Highlighting) and `remark-gfm`.
-- **Information Architecture:** Statically routed using Catch-all segments (`app/notes/[...slug]`) mapping directly to a strict **P.A.R.A methodology** directory structure.
-- **Taxonomy Routing:** Dynamic tag aggregation and filtering via `app/tags/[tag]` utilizing native MDX frontmatter extraction.
-- **SEO & Discovery:** Custom Next.js Metadata API and `@vercel/og` engine dynamically generating OpenGraph image cards.
-- **CI/CD Pipeline:** Automated Edge deployment via Vercel.
+- **Framework:** Next.js 16 (App Router) with React Server Components.
+- **Styling:** Tailwind CSS v4 (config in `globals.css` via `@theme`). Minimalist, high-contrast.
+- **Content Engine:** Local MDX, compiled at render time. `remark-gfm` (GitHub-flavoured
+  markdown) + `rehype-pretty-code` (syntax highlighting, Shiki transitively).
+- **Content Layer:** `lib/mdx.ts` — file discovery, frontmatter parsing, validation,
+  and public fetchers. Routing shells stay thin; logic is centralised here.
+- **Taxonomy Routing:** Dynamic tag aggregation via `app/tags/[tag]`, derived
+  entirely from post frontmatter (no separate tag store).
+- **SEO:** Next.js Metadata API + `@vercel/og` for dynamic OpenGraph cards.
+- **Deployment:** Vercel.
 
-## 🚀 Development Workflow: Multi-AI Vibe Coding
-This codebase is actively developed using a dual-AI workflow:
-- **Macro-Architect:** Google Gemini (Handles system blueprinting, constraints, and architecture planning).
-- **Micro-Executor:** Anthropic Claude via Cursor IDE Agent (Handles localized code generation and implementation).
+### ⚠️ Architecture migration in progress
+The published URL structure currently uses a catch-all `/notes/[...slug]` route
+mapped to a P.A.R.A. directory structure. This is being migrated to a flat,
+reader-intent taxonomy (`/essays/[slug]`, `/case-studies/[slug]`, `/reference/[slug]`)
+using an expand-then-contract pattern — new routes are built alongside the old
+before anything is removed, with 301 redirects preserving existing URLs.
 
-## 💻 Local Setup (Strictly `npm`)
-To run the development server locally, please ensure you use `npm` to avoid lockfile conflicts.
+P.A.R.A. remains the *authoring* workflow; it is being decoupled from the
+*published* URL structure.
+
+## 🤝 Development Workflow
+Built without inline AI code generation. No Copilot, no Cursor, no inline
+completion — the editor is VS Code, unaugmented.
+
+AI assistance is conversational and externally mediated: Claude acts as tutor,
+reviewer, and Socratic sparring partner for architectural decisions. Every line
+in this repository is hand-typed, and every design decision is reasoned through
+before implementation. Commit history reflects that process.
+
+Commits follow [Conventional Commits](https://www.conventionalcommits.org/).
+
+## 💻 Local Setup (strictly `npm`)
 ```bash
 npm install
 npm run dev
 ```
 
-## 📂 Content Management (P.A.R.A)
-All articles and technical notes must be added to the content/ directory. Files must end in .mdx and contain strict frontmatter:
-```YAML
+## 📂 Content Authoring
+Articles live in `content/` and must end in `.mdx` with valid frontmatter:
+
+```yaml
 ---
 title: "Article Title"
 date: "YYYY-MM-DD"
 tags: ["Tag1", "Tag2"]
 status: "Draft" | "Published"
+excerpt: "Optional short summary."
+contentType: "essay" | "case-study" | "reference" | "note"
 ---
 ```
 
+`title` and `date` are required and fail the build if missing or malformed.
+`contentType` is currently optional during the architecture migration; an
+invalid value fails fast, a missing value is tolerated.
+
 ---
 
-Current Architectural State: v1.4.0 (Taxonomy & Tag Routing)
+**Current state:** v1.5.0-dev — Phase 1 refactor (content-type data layer landed;
+routing migration pending).
