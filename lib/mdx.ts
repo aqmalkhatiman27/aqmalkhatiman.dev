@@ -5,6 +5,8 @@ import matter from "gray-matter";
 const CONTENT_DIR = path.join(process.cwd(), "content");
 const MDX_EXTENSION = ".mdx";
 
+const CONTENT_TYPES = ["essay", "case-study", "reference", "note"] as const;
+type ContentType = (typeof CONTENT_TYPES)[number];
 type FrontmatterRecord = Record<string, unknown>;
 
 export interface PostMetadata {
@@ -14,6 +16,7 @@ export interface PostMetadata {
   tags: string[];
   status?: string;
   excerpt?: string;
+  contentType?: ContentType;
 }
 
 export interface Post extends PostMetadata {
