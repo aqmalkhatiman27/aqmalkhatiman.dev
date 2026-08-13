@@ -109,6 +109,7 @@ function parseMetadata(data: FrontmatterRecord, slug: string, sourcePath: string
     tags: parseTags(data.tags),
     status: isNonEmptyString(data.status) ? data.status.trim() : undefined,
     excerpt: isNonEmptyString(data.excerpt) ? data.excerpt.trim() : undefined,
+    contentType: parseContentType(data.contentType, sourcePath),
   };
 }
 
