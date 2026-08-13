@@ -77,6 +77,26 @@ function parseDate(value: unknown, sourcePath: string): string {
   return value;
 }
 
+function isContentType(value: string): value is ContentType {
+  return (CONTENT_TYPES as readonly string[]).includes(value);
+}
+
+function parseContentType(value: unknown, sourcePath: string): ContentType | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+
+  if (!isNonEmptyString(value)) {
+    throw new Error(`Invalid 'contentType' format in frontmatter: ${sourcePath} (found: ${String(value)})`);
+  }
+
+  if (isContentType(value)) {
+    return value;
+  }
+
+  throw new Error(`Invalid 'contentType' in frontmatter: ${sourcePath} (found: ${value})`);
+}
+
 function parseMetadata(data: FrontmatterRecord, slug: string, sourcePath: string): PostMetadata {
   if (!isNonEmptyString(data.title)) {
     throw new Error(`Missing or invalid 'title' in frontmatter: ${sourcePath}`);
